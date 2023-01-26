@@ -2,8 +2,8 @@ import numpy as np
 from constants import*
 
 class Toroid:
-    # the "constructor"
-    def __init__(self, grid=None): 
+    def __init__(self, grid=None, seed=None, period=None): 
+        self.seed = seed if seed else np.random.seed(123)
         if grid:
             self.grid = grid
             self.length = grid.shape[0]
@@ -12,7 +12,8 @@ class Toroid:
             self.length = ROWS
             self.height = COLS
             self.grid = self.create_grid()
-    
+        self.period = period
+
     def create_grid(self):
         grid = np.random.randint(2, size=(self.length, self.height))
         return grid
@@ -70,14 +71,14 @@ class Toroid:
               #2nd rule: birth    
               elif neighbors[i,j] == 3:
                 new_grid[i,j] = 1
-                #3rd rule: death
+              #3rd rule: death
               else: new_grid[i,j] = 0
         self.grid = new_grid
         return new_grid
 
-    def trailblaze(self,time): # "heatmap" ! work in progress !
-        heat = self.grid#np.zeros((self.length,self.height))
-        for i in range(time): #voglio istanti diversi = colori diversi e sovrapporre nuovo a vecchio
+    def trailblaze(self, time): # "heatmap" ! work in progress !
+        heat = self.grid    #np.zeros((self.length,self.height))
+        for i in range(time):   #voglio istanti diversi = colori diversi e sovrapporre nuovo a vecchio
           old = np.where(heat>0, heat,0)
           new = self.update()
           heat = heat + i*np.where((new-old)>0, (new-old),0)
@@ -86,17 +87,31 @@ class Toroid:
     def stampa(self):
         print(self.grid)
 
-    def search_pattern(self, dizionario):
+
+    # Search patterns
+    
+    def rotate_pattern(self, way, times):
+        return np.rot90(way, times)
+
+    def chiral(self, direction):    # direction could be up/down (0) or left/right (1)
+        return np.flip(self.pattern, direction)
+
+    def search_pattern(self, pattern, name):   #'pattern' is just a np.array
         pattern_trovati = []
-        for pattern in dizionario:
-            for chirality in range(0, 2):
-                for rotation in range(0, 4):
-                    pattern_used = dizionario[pattern].chiral(chirality).rotate_pattern(rotation)
-                    for i in range((self.length - pattern_used.length + 1)):
-                        for j in range((self.height - pattern_used.height + 1)):
-                            looking_element = self.grid[i:pattern_used.length+i, j:pattern_used.height+j]
-                            if (looking_element.astype(int) == pattern_used.grid).all():
-                                print("trovata corrispondenza")
-                                pattern_trovati.append([pattern, chirality, rotation, i, j])
-                            # print([pattern, chirality, rotation, i, j])
+        pattern_used = []
+        self.pattern = pattern
+        for chirality in range(0, 2):
+            for rotation in range(0, 4): 
+                tmp = self.chiral(chirality)
+                pattern_used.append(self.rotate_pattern(tmp, rotation))
+        pattern_used = np.unique(pattern_used)
+        # search on grid
+        for k in range(pattern_used.shape[0]):
+            for i in range((self.length - self.pattern.shape[0] + 1)):
+                for j in range((self.height - self.pattern.shape[1] + 1)):
+                    looking_element = self.grid[i:self.pattern.shape[0]+i, j:self.pattern.shape[1]+j]
+                    if (looking_element.astype(int) == pattern_used[k]).all():
+                        # print("trovata corrispondenza")
+                        pattern_trovati.append([name, chirality, rotation, i, j])
+                    # print([pattern, chirality, rotation, i, j])
         return pattern_trovati
