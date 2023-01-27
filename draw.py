@@ -40,4 +40,4 @@ class Draw:
         #     image = C_BLUE
         else:
             image = C_BLACK
-        pygame.draw.rect(self.window, image, pygame.Rect(row, col, 1.5*RADIUS, 1.5*RADIUS))
+        pygame.draw.rect(self.window, image, pygame.Rect(col, row, 1.5*RADIUS, 1.5*RADIUS))

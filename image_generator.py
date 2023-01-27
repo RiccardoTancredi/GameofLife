@@ -3,30 +3,54 @@ import imageio
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
+import skimage.measure
 
-imageName = "images/amogus.jpg"
+amogus = "images/amogus.jpg"
+monna_lisa = "images/monna_lisa.jpg"
 
 def magnitude(v): #Converts coloured pixels to range: 0 black, 1 white
     norm = 0.3*v[0]+0.59*v[1]+0.11*v[2] #formula I found online which works nicely
     norm = norm/255
     return norm
 
-def gridFromImage(imageName):
+def resizeImage(mbw,desiredDimension): # We need the dimension of the output (circa)
+    mbw = np.array(mbw)
+    ratio =  mbw.shape[0]//desiredDimension #horizontal axis
+    output = skimage.measure.block_reduce(mbw, block_size=ratio, func=np.mean, cval=0, func_kwargs=None) 
+    return output
+
+def bit_to_rgb(mbw):
+    mRGB = []
+    for i in range(mbw.shape[0]):
+        l = []
+        for j in range(mbw.shape[1]):
+            if mbw[i][j]==1:
+                l.append([255,255,255])
+            elif mbw[i][j]==0:
+                l.append([0,0,0])
+        mRGB.append(l)
+    # plt.imshow(mRGB)
+    # plt.show()
+    return mRGB
+
+
+def gridFromImage(imageName, resize=None, desiredDimension=None):
     im = mpimg.imread(imageName)
     dims = im.shape #dimensioni dell'immagine
     m = np.array(im) #vedi la foto come un array su numpy
-    mbw = [] #mbw: matrice con i valori su scala di grigio
-
-    # size = (100, 100)
-    # im = im.resize(size)
 
     # Cambia l'immagine da colorata ad in bianco e nero
+    mbw = [] #mbw: matrice con i valori su scala di grigio
     for i in range(dims[0]): #righe
         l = []
         for j in range(dims[1]): #colonne
             value = magnitude(m[i][j])
             l.append(value)
         mbw.append(l)
+
+    if resize:
+        mbw = resizeImage(mbw, desiredDimension)
+        dims = mbw.shape #dimensioni dell'immagine
 
     # Funzione di Floyd da definizione
     for i in range(dims[0]):
@@ -48,41 +72,10 @@ def gridFromImage(imageName):
                     mbw[i+1][j-1] = mbw[i+1][j-1]+3/16*errore
                 mbw[i+1][j] = mbw[i+1][j]+5/16*errore
 
-    mRGB = []
-    for i in range(dims[0]):
-        l = []
-        for j in range(dims[1]):
-            if mbw[i][j]==1:
-                l.append([255,255,255])
-            elif mbw[i][j]==0:
-                l.append([0,0,0])
-        mRGB.append(l)
-    plt.imshow(mRGB)
-    plt.show()
+    mbw = np.array(mbw) 
+    mRGB = bit_to_rgb(mbw)
+
     return mbw
-
-
-    # new_im = np.zeros(im.size)
-    # for i in im.size[0]:
-    #     for j in im.size[1]: #per ogni pixel vai al più vicino tra zero e uno e propaga errore
-        
-    #         if (im[i][j] > 0.5)
-    #             new_im[i][j] = 1
-    #         else:
-    #             new_im[i][j] = 0
-    # return new_im
-
-# def Floyd(imageName):
-#     im = mpimg.imread(imageName)
-#     new_im = np.zeros(im.size)
-#     for i in im.size[0]:
-#         for j in im.size[1]:
-#             if (im[i][j] > 0.5):
-#                 new_im[i][j] = 1
-#             else:
-#                 new_im[i][j] = 0
-#     return new_im
-    
 
 def printImage(imageName):
     # foto=imageio.imread(imageName, )
@@ -91,6 +84,7 @@ def printImage(imageName):
     plt.show()
 
 def main():
-    gridFromImage(imageName)
+    matrix = gridFromImage(monna_lisa, resize=True, desiredDimension=100)
+    # print(matrix)
 
 main()

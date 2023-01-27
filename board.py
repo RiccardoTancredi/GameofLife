@@ -1,10 +1,12 @@
 import numpy as np
 from constants import*
+from image_generator import gridFromImage
 
 class Toroid:
-    def __init__(self, grid=None, seed=None, period=None): 
+    def __init__(self, grid=None, seed=None, period=None, image=None): 
         self.seed = seed if seed else np.random.seed(123)
-        if grid:
+        self.image = image
+        if grid is not None:
             self.grid = grid
             self.length = grid.shape[0]
             self.height = grid.shape[1]
@@ -15,6 +17,8 @@ class Toroid:
         self.period = period
 
     def create_grid(self):
+        if self.image:
+            return gridFromImage(self.image, resize=True, desiredDimension=100)
         grid = np.random.randint(2, size=(self.length, self.height))
         return grid
 
@@ -23,8 +27,8 @@ class Toroid:
         x,y = pos[0]+1,pos[1]+1
         
         grid2 = np.pad(self.grid, pad_width=1)    
-        grid2[0],grid2[-1] = grid2[-2],grid2[1] #first/last row = last/first row
-        grid2[:,0], grid2[:,-1] = grid2[:,-2],grid2[:,1] #same w/ columns
+        grid2[0],grid2[-1] = grid2[-2],grid2[1]             #first/last row = last/first row
+        grid2[:,0], grid2[:,-1] = grid2[:,-2],grid2[:,1]    #same w/ columns
         
         alive = alive + grid2[x-1][y-1] + grid2[x-1][y] + grid2[x-1][y+1]
         alive = alive + grid2[x][y-1] + grid2[x][y+1]
@@ -77,11 +81,11 @@ class Toroid:
         return new_grid
 
     def trailblaze(self, time): # "heatmap" ! work in progress !
-        heat = self.grid    #np.zeros((self.length,self.height))
+        heat = self.grid        #np.zeros((self.length,self.height))
         for i in range(time):   #voglio istanti diversi = colori diversi e sovrapporre nuovo a vecchio
-          old = np.where(heat>0, heat,0)
-          new = self.update()
-          heat = heat + i*np.where((new-old)>0, (new-old),0)
+            old = np.where(heat>0, heat,0)
+            new = self.update()
+            heat = heat + i*np.where((new-old)>0, (new-old),0)
         return heat    
 
     def stampa(self):
@@ -89,6 +93,16 @@ class Toroid:
 
 
     # Search patterns
+    def Ipad(self, n):
+        # n = rows of padding
+        grid2 = np.pad(self.grid, pad_width=n)    
+        for i in range(n):
+            grid2[-i+n-1] = grid2[-n-1-i]       # first row = last row
+            grid2[i-n] = grid2[n+i]             # last row = first row
+        for i in range(n):
+            grid2[:, -i+n-1] = grid2[:, -n-1-i]       # first row = last row
+            grid2[:, i-n] = grid2[:, n+i]             # last row = first row
+        return grid2
     
     def rotate_pattern(self, way, times):
         return np.rot90(way, times)
@@ -104,14 +118,39 @@ class Toroid:
             for rotation in range(0, 4): 
                 tmp = self.chiral(chirality)
                 pattern_used.append(self.rotate_pattern(tmp, rotation))
-        pattern_used = np.unique(pattern_used)
+        pattern_used = myunique(pattern_used)
+        
         # search on grid
-        for k in range(pattern_used.shape[0]):
-            for i in range((self.length - self.pattern.shape[0] + 1)):
-                for j in range((self.height - self.pattern.shape[1] + 1)):
-                    looking_element = self.grid[i:self.pattern.shape[0]+i, j:self.pattern.shape[1]+j]
+        # In order to look also for pattern in the extreme part of the grid, we pad the grid itself 
+        n = round(self.pattern.shape[0]/2)
+        tmp_grid = self.Ipad(n)
+        for k in range(len(pattern_used)):
+            for i in range((tmp_grid.shape[0] - self.pattern.shape[0] + 1)):#
+                for j in range((tmp_grid.shape[1] - self.pattern.shape[1] + 1)):
+                    looking_element = tmp_grid[i:self.pattern.shape[0]+i, j:self.pattern.shape[1]+j]
                     if (looking_element.astype(int) == pattern_used[k]).all():
                         # print("trovata corrispondenza")
                         pattern_trovati.append([name, chirality, rotation, i, j])
                     # print([pattern, chirality, rotation, i, j])
+        for element in pattern_trovati:
+            # ToDo
+            pass 
         return pattern_trovati
+
+
+
+
+
+
+def myunique(listofarr):
+    n = len(listofarr)
+    origin = listofarr[0]
+    uniquelist = [origin]
+    for i in range(1, n):
+        for arr in uniquelist:
+            count = 0
+            if (listofarr[i] - arr).any():
+                count += 1
+        if count == len(uniquelist):
+            uniquelist.append(listofarr[i])
+    return uniquelist
