@@ -4,7 +4,7 @@ from image_generator import gridFromImage
 
 class Toroid:
     def __init__(self, grid=None, seed=None, period=None, image=None): 
-        self.seed = seed if seed else np.random.seed(123)
+        self.seed = np.random.seed(seed) if seed else np.random.seed(123)
         self.image = image
         if grid is not None:
             self.grid = grid
@@ -117,24 +117,21 @@ class Toroid:
         for chirality in range(0, 2):
             for rotation in range(0, 4): 
                 tmp = self.chiral(chirality)
-                pattern_used.append(self.rotate_pattern(tmp, rotation))
+                pattern_used.append([self.rotate_pattern(tmp, rotation), chirality, rotation])
         pattern_used = myunique(pattern_used)
-        
+        # print(pattern_used)
         # search on grid
         # In order to look also for pattern in the extreme part of the grid, we pad the grid itself 
         n = round(self.pattern.shape[0]/2)
         tmp_grid = self.Ipad(n)
         for k in range(len(pattern_used)):
-            for i in range((tmp_grid.shape[0] - self.pattern.shape[0] + 1)):#
-                for j in range((tmp_grid.shape[1] - self.pattern.shape[1] + 1)):
-                    looking_element = tmp_grid[i:self.pattern.shape[0]+i, j:self.pattern.shape[1]+j]
-                    if (looking_element.astype(int) == pattern_used[k]).all():
+            for i in range((tmp_grid.shape[0] - pattern_used[k][0].shape[0])):
+                for j in range((tmp_grid.shape[1] - pattern_used[k][0].shape[1])):
+                    looking_element = tmp_grid[i:pattern_used[k][0].shape[0]+i, j:pattern_used[k][0].shape[1]+j]
+                    if not ((np.round(np.abs(looking_element.astype(int) - pattern_used[k][0]))).any()):
                         # print("trovata corrispondenza")
+                        chirality, rotation = pattern_used[k][1:3]
                         pattern_trovati.append([name, chirality, rotation, i, j])
-                    # print([pattern, chirality, rotation, i, j])
-        for element in pattern_trovati:
-            # ToDo
-            pass 
         return pattern_trovati
 
 
@@ -143,14 +140,16 @@ class Toroid:
 
 
 def myunique(listofarr):
-    n = len(listofarr)
-    origin = listofarr[0]
-    uniquelist = [origin]
+    n = len(listofarr) 
+    uniquelist = [listofarr[0]]
     for i in range(1, n):
         for arr in uniquelist:
             count = 0
-            if (listofarr[i] - arr).any():
+            if np.abs(listofarr[i][0].shape[0] - arr[0].shape[0]):  # if pattern.shape is different the patterns are different
+                count += 1
+            elif (listofarr[i][0] - arr[0]).any():
                 count += 1
         if count == len(uniquelist):
             uniquelist.append(listofarr[i])
     return uniquelist
+

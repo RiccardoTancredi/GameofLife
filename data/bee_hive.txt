@@ -1,0 +1,5 @@
+# Width = 120, Height = 120, Seed = 123, Num of iterations = 300
+116	[['bee_hive', 0, 0, 13, 0]]
+117	[['bee_hive', 0, 0, 13, 0]]
+118	[['bee_hive', 0, 0, 13, 0]]
+119	[['bee_hive', 0, 0, 13, 0]]

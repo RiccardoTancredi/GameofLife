@@ -1,15 +1,7 @@
-import pygame
-
 from board import Toroid
 from constants import *
-from draw import Draw
 import numpy as np
-# from image_generator import gridFromImage
 
-FPS = 60
-
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Game of Life')
 
 pattern_zoo = {"block" : np.array([[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]]),
               "bee_hive" : np.array([[0.5, 0, 0, 0, 0, 0.5], [0, 0, 1, 1, 0, 0], [0, 1, 0, 0, 1, 0], [0, 0, 1, 1, 0, 0], [0.5, 0, 0, 0, 0, 0.5]]),
@@ -53,9 +45,9 @@ pattern_period = {"block" : 1, #still lifes
               "toad" : 2,
               "beacon" : 2,
 
-              "pulsar": 3,
+              "pulsar":3,
 
-              "glider": 4  #spaceships
+              "glider":4  #spaceships
               }
 
 name_image = "images/monna_lisa.jpg"
@@ -64,10 +56,7 @@ file_name = 'data/'+figure+'.txt'
 pattern = pattern_zoo[figure]
 seed = 123
 game = Toroid(period=pattern_period[figure], seed=123)#, image=name_image)
-
 game.grid = game.create_grid()   # create the grid
-
-draw = Draw(WIN, game)
 found_histo = []
 
 drawing = True
@@ -79,28 +68,12 @@ with open(file_name, 'a') as f:
 def main():
     run = True
     time = 0
-    clock = pygame.time.Clock()
-    pause = False
 
     while run:
-        if drawing:
-            clock.tick(FPS)
-            draw.update() 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    pause = True
-                    while pause:
-                        for event in pygame.event.get():
-                            if event.type == pygame.MOUSEBUTTONDOWN:
-                                pause = False
-
         found_histo = game.search_pattern(pattern=pattern, name=figure)
         game.grid = game.update()
-        # pygame.time.delay(5000)
+
         time += 1
-        # print(time)
         with open(file_name, 'a') as f:
             if found_histo:
                 f.write(str(time) + '\t')
@@ -111,14 +84,6 @@ def main():
         if time == iterations:
             print("Completed")
             run = False
-        # if time == 7 or time == 15 or time == 16 or time == 21:
-        #     pygame.time.delay(15000)
-    
-    pygame.quit()
-
-# testgrid = Toroid( grid=pattern_zoo[figure] )
-
-# print(testgrid.Ipad(3))
 
 main()
 
