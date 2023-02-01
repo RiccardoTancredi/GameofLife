@@ -82,7 +82,18 @@ def printImage(imageName):
     plt.show()
 
 def main():
-    matrix = gridFromImage(monna_lisa, resize=True, desiredDimension=100)
-    # print(matrix)
-
-main()
+    immagine = "amogus"
+    inputFile = "images/"+immagine+".jpg"
+    nameOutputFile = "images_txt/"+immagine+".txt"
+    matrix = gridFromImage(inputFile, resize=True, desiredDimension=20)
+    outputFile =  open(nameOutputFile, "w")
+    for i in range(matrix.shape[0]):
+        for j in range(matrix.shape[1]):
+            outputFile.write(str(int(matrix[i][j])))
+            if j!=matrix.shape[1]-1:
+                outputFile.write(" ")
+        outputFile.write("\n")
+    outputFile.close()
+    printImage(inputFile)
+    
+# main()

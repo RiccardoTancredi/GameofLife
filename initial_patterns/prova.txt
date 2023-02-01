@@ -1,0 +1,5 @@
+11,11
+False
+block,0,0,False
+loaf,0,4,True
+tub,6,0,False

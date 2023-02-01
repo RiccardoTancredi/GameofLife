@@ -3,7 +3,7 @@ from constants import*
 from image_generator import gridFromImage
 
 class Toroid:
-    def __init__(self, grid=None, seed=None, period=None, image=None): 
+    def __init__(self, grid=None, seed=None, period=None, image=None, dimension=None): 
         self.seed = np.random.seed(seed) if seed else np.random.seed(123)
         self.image = image
         if grid is not None:
@@ -11,8 +11,7 @@ class Toroid:
             self.length = grid.shape[0]
             self.height = grid.shape[1]
         else:
-            self.length = ROWS
-            self.height = COLS
+            self.length, self.height = dimension if dimension else [ROWS, COLS]
             self.grid = self.create_grid()
         self.period = period
 
@@ -45,16 +44,16 @@ class Toroid:
 
     def get_cell(self, position):
         row, col = position
-        if 0 <= row <= ROWS-1 and 0 <= col <= COLS-1:
+        if 0 <= row < self.length and 0 <= col < self.height:
             return self.grid[row][col]
         else:
             pass
     
     def get_cells(self, color=None):
         cells = []
-        for i in range(ROWS):
+        for i in range(self.length):
             x = i * SQUARE_SIZE
-            for j in range(COLS):
+            for j in range(self.height):
                 y = j * SQUARE_SIZE 
                 cell = self.get_cell((i, j))
                 if not cell:
@@ -110,7 +109,7 @@ class Toroid:
     def chiral(self, direction):    # direction could be up/down (0) or left/right (1)
         return np.flip(self.pattern, direction)
 
-    def search_pattern(self, pattern, name):   #'pattern' is just a np.array
+    def search_pattern(self, pattern):   #'pattern' is just a np.array
         pattern_trovati = []
         pattern_used = []
         self.pattern = pattern
@@ -131,7 +130,7 @@ class Toroid:
                     if not ((np.round(np.abs(looking_element.astype(int) - pattern_used[k][0]))).any()):
                         # print("trovata corrispondenza")
                         chirality, rotation = pattern_used[k][1:3]
-                        pattern_trovati.append([name, chirality, rotation, i, j])
+                        pattern_trovati.append([chirality, rotation, i, j])
         return pattern_trovati
 
 
@@ -152,4 +151,3 @@ def myunique(listofarr):
         if count == len(uniquelist):
             uniquelist.append(listofarr[i])
     return uniquelist
-

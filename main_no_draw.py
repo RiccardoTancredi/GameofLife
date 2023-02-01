@@ -1,7 +1,7 @@
 from board import Toroid
 from constants import *
 import numpy as np
-
+import os
 
 pattern_zoo = {"block" : np.array([[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]]),
               "bee_hive" : np.array([[0.5, 0, 0, 0, 0, 0.5], [0, 0, 1, 1, 0, 0], [0, 1, 0, 0, 1, 0], [0, 0, 1, 1, 0, 0], [0.5, 0, 0, 0, 0, 0.5]]),
@@ -50,40 +50,53 @@ pattern_period = {"block" : 1, #still lifes
               "glider":4  #spaceships
               }
 
-name_image = "images/monna_lisa.jpg"
-figure = "glider"
-file_name = 'data/'+figure+'.txt'
-pattern = pattern_zoo[figure]
-seed = 123
-game = Toroid(period=pattern_period[figure], seed=123)#, image=name_image)
-game.grid = game.create_grid()   # create the grid
-found_histo = []
+iterations = 100
 
-drawing = True
-iterations = 300
-
-with open(file_name, 'a') as f:
-    f.write(f'# Width = {WIDTH}, Height = {HEIGHT}, Seed = {seed}, Num of iterations = {iterations}'+'\n')
-
+all_dimensions = [[15, 15], [18, 18]]
+all_seeds = [123, 124]
 def main():
-    run = True
-    time = 0
+    for dimensions in all_dimensions:
+        for seed in all_seeds:
+            folder_name = "data/"+str(dimensions[0])+"_"+str(dimensions[1])
+            if not os.path.exists(folder_name):  
+                os.makedirs(folder_name) 
+            file_name = folder_name+"/"+str(seed)+'.csv'
+            game = Toroid(seed=seed, dimension=dimensions)
+            game.grid = game.create_grid()   # create the grid
+            found_histo = []
+            f = open(file_name, 'a')
+            for index in range(len(pattern_zoo.keys())):
+                f.write(f'{list(pattern_zoo.keys())[index]}')
+                if index != len(pattern_zoo.keys())-1:
+                    f.write(';')
+            f.write('\n')
 
-    while run:
-        found_histo = game.search_pattern(pattern=pattern, name=figure)
-        game.grid = game.update()
+            run = True
+            time = 0 
+            
+            while run:
+                for figure in pattern_zoo.keys():
+                    pattern = pattern_zoo[figure]
+                    found_histo = game.search_pattern(pattern=pattern) 
+                    if found_histo:
+                        f.write(str(found_histo))    
+                    else: 
+                        f.write(str(0))
 
-        time += 1
-        with open(file_name, 'a') as f:
-            if found_histo:
-                f.write(str(time) + '\t')
-                f.write(str(found_histo) + '\n')
-        
-        # if (time/1000).is_integer():
-        #     print(time)
-        if time == iterations:
-            print("Completed")
-            run = False
+                    if figure != list(pattern_zoo.keys())[-1]:
+                            f.write(';')
+
+                game.grid = game.update()
+
+                time += 1
+                
+                f.write('\n')
+                # if (time/1000).is_integer():
+                #     print(time)
+                if time == iterations:
+                    print(f"Completed: dim={dimensions}; seed={seed}")
+                    f.close()
+                    run = False
 
 main()
 
