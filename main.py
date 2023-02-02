@@ -110,7 +110,7 @@ def prendiInput():
         return game
 
     elif comando == "easterEgg": #pescala dall'archivio
-        print("Our library of images is:\n monalisa\norecchino\neinstein\nquantum\n...\n")
+        print("Our library of images is:\n monalisa\norecchino\neinstein\nquantum\n")
 
         figure = input("Which one do you choose?\n")
         file_name = 'images_txt/'+figure+'.txt'
@@ -125,9 +125,9 @@ def prendiInput():
         game = Toroid(grid = griglia)
         return game
 
-    elif comando == "zanetti": 
-        print("Vi meritate questo 30!")
-        file_name = 'images_txt/zanetti.txt'
+    elif comando == "parisi": 
+        print("Questo gioco è complesso, ed ora me ne vado, PUF!")
+        file_name = 'images_txt/parisi.txt'
         griglia = np.loadtxt(file_name, delimiter=" ")
         game = Toroid(grid = griglia)
         return game
