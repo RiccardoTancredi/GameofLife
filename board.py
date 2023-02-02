@@ -3,9 +3,10 @@ from constants import*
 from image_generator import gridFromImage
 
 class Toroid:
-    def __init__(self, grid=None, seed=None, period=None, image=None, dimension=None): 
+    def __init__(self, grid=None, seed=None, period=None, image=None, dimension=None, native=50): 
         self.seed = np.random.seed(seed) if seed else np.random.seed(123)
         self.image = image
+        self.native = native
         if grid is not None:
             self.grid = grid
             self.length = grid.shape[0]
@@ -14,11 +15,14 @@ class Toroid:
             self.length, self.height = dimension if dimension else [ROWS, COLS]
             self.grid = self.create_grid()
         self.period = period
+        self.occupancy = np.sum(self.grid)
+        self.heat = 0
 
     def create_grid(self):
         if self.image:
             return gridFromImage(self.image, resize=True, desiredDimension=100)
-        grid = np.random.randint(2, size=(self.length, self.height))
+        chance_grid = np.random.randint(low=0, high=100, size=(self.length, self.height))
+        grid = np.where(chance_grid<self.native, 1, 0)
         return grid
 
     def search_surround(self,pos):
@@ -65,7 +69,9 @@ class Toroid:
     def update(self): #to be merged with neighbors()
         neighbors = self.neighbors()
         old_grid = self.grid.copy()
-        new_grid = old_grid
+        new_grid = self.grid.copy()
+        self.occupancy = 0
+        self.heat = 0
         for i in range(self.length): #could be done with masks
             for j in range(self.height):
               #1st rule: freeze
@@ -75,8 +81,13 @@ class Toroid:
               elif neighbors[i,j] == 3:
                 new_grid[i,j] = 1
               #3rd rule: death
-              else: new_grid[i,j] = 0
+              else: 
+                new_grid[i,j] = 0
         self.grid = new_grid
+        
+        self.occupancy = np.sum(self.grid)
+        self.heat = np.sum(np.abs(new_grid-old_grid))
+        
         return new_grid
 
     def trailblaze(self, time): # "heatmap" ! work in progress !

@@ -110,9 +110,9 @@ def prendiInput():
         return game
 
     elif comando == "easterEgg": #pescala dall'archivio
-        print("Our library of images is:\n monalisa.txt \norecchino.txt\neinstein.txt\n...")
+        print("Our library of images is:\n monalisa\norecchino\neinstein\nquantum\n...\n")
 
-        figure = input("Which one do you choose?")
+        figure = input("Which one do you choose?\n")
         file_name = 'images_txt/'+figure+'.txt'
         griglia = np.loadtxt(file_name, delimiter=" ")
         game = Toroid(grid = griglia)
@@ -121,6 +121,13 @@ def prendiInput():
     elif comando == "amogus": 
         print("Amogus took possess of your pc!\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\nNow I'm moving here\n")
         file_name = 'images_txt/amogus.txt'
+        griglia = np.loadtxt(file_name, delimiter=" ")
+        game = Toroid(grid = griglia)
+        return game
+
+    elif comando == "zanetti": 
+        print("Vi meritate questo 30!")
+        file_name = 'images_txt/zanetti.txt'
         griglia = np.loadtxt(file_name, delimiter=" ")
         game = Toroid(grid = griglia)
         return game
@@ -136,7 +143,9 @@ def prendiInput():
     
     else:
         print("Impara a scrivere! Ora farò come mi aggrada\n")
-        game = Toroid(seed = np.random.randint(0, 1000), dimension = np.random.randint(10, 50, 2))
+        seedR = np.random.randint(0, 1000)
+        dim_hor, dim_ver = np.random.randint(10, 50), np.random.randint(10, 50)
+        game = Toroid(seed=seedR, dimension=[int(dim_ver), int(dim_hor)])
         return game
 
 game = prendiInput()
@@ -145,7 +154,7 @@ draw = Draw(WIN, game)
 found_histo = []
 
 drawing = True
-iterations = 300000
+iterations = int(1e6)
 
 def main():
 
@@ -170,7 +179,9 @@ def main():
 
         # found_histo = game.search_pattern(pattern=pattern, name=figure)
         game.grid = game.update()
-        pygame.time.delay(5000)
+        if time == 0:
+            pygame.time.delay(3000) # To show the initial pattern
+        pygame.time.delay(500) # To slow down the simulation
         time += 1
         # print(time)
         if (time/1000).is_integer():
@@ -178,8 +189,6 @@ def main():
         if time == iterations:
             print("Completed")
             run = False
-        # if time == 7 or time == 15 or time == 16 or time == 21:
-        #     pygame.time.delay(15000)
     
     pygame.quit()
 
