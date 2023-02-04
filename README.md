@@ -10,7 +10,7 @@ Feltrin Antonio, Sardo Infirri Giosuè, Tancredi Riccardo, Toso Simone
 4.	 A dead cell with three live neighbours becomes alive.
 	
 ### Our project
-We implemented the rules of GoL in Python, simulating it with [periodic boundary conditions](https://link-url-here.org) and using the Pygame library to create the visual interface. Running `main.py`, the user can choose the initial configuration (details below) and look at how the game evolves. Finally, we analysed some observable quantities gathered from our games (occupancy, lifespan).
+We implemented the rules of GoL in Python, simulating it with periodic boundary conditions and using the Pygame library to create the visual interface. Running `main.py`, the user can choose the initial configuration (details below) and look at how the game evolves. Finally, we analysed some observable quantities gathered from our games (occupancy, lifespan).
 
 ## The code
 ### Board definition 
