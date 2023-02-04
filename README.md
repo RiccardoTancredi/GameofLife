@@ -31,7 +31,8 @@ The class contains various methods, called either when running the game or durin
 ### draw.py
 
 ### main.py
-In the file `main.py` we allow the user to choose how to initialize the board. The terminal prompts the user to choose among certain options; the user replies by writing the answer. At the beginning of the file, we define a dictionary called `pattern_zoo`. This dictionary contains, in the form of numpy arrays, the most
+In the file `main.py` we allow the user to choose how to initialize the board. The terminal prompts the user to choose among certain options; the user replies by writing the answer. 
+At the beginning of the file, we define a dictionary called `pattern_zoo`. This dictionary contains, in the form of numpy arrays, the most common patterns which emerge in the game.
 
 The choices are *random*, *fromTxt* and *easterEgg*. 
 * *random*: randomly initialize the grid. The user is then asked to input the seed for the random number generator and the vertical and horizontal dimension of the grid. 
