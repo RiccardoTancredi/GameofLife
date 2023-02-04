@@ -153,8 +153,8 @@ def myunique(listofarr):
     n = len(listofarr) 
     uniquelist = [listofarr[0]]
     for i in range(1, n):
+        count = 0
         for arr in uniquelist:
-            count = 0
             if np.abs(listofarr[i][0].shape[0] - arr[0].shape[0]):  # if pattern.shape is different the patterns are different
                 count += 1
             elif (listofarr[i][0] - arr[0]).any():
