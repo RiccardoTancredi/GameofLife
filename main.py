@@ -7,7 +7,9 @@ import numpy as np
 from image_generator import gridFromImage
 from pattern_generator import patternGenerator
 
-FPS = 60
+import os
+import imageio
+
 
 # WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Game of Life')
@@ -149,12 +151,20 @@ def prendiInput():
         return game
 
 game = prendiInput()
+#game = Toroid(seed= 101, dimension=[30,30],native=38)
 WIN = pygame.display.set_mode((game.height*SQUARE_SIZE, game.length*SQUARE_SIZE))
 draw = Draw(WIN, game)
 found_histo = []
 
 drawing = True
-iterations = int(1e6)
+iterations = int(50)
+FPS = 60
+
+image_togif_list = [0]*iterations
+gif_name = "animation" #input("Insert name of animation.gif\n")
+gif_rate = [0.1]*iterations
+gif_rate[0] = 3 #first image stays longer in final gif (useful for easter eggs)
+
 
 def main():
 
@@ -181,9 +191,13 @@ def main():
         game.grid = game.update()
         if time == 0:
             pygame.time.delay(3000) # To show the initial pattern
-        pygame.time.delay(500) # To slow down the simulation
+
+        #pygame.time.delay(1) # To slow down the simulation
+        image_togif_list[time] = "gif_stills/"+ "frame_" + str(time) + ".png"
+        pygame.image.save(WIN, image_togif_list[time])
+
         time += 1
-        # print(time)
+        print(time)
         if (time/1000).is_integer():
             print(time)
         if time == iterations:
@@ -191,6 +205,11 @@ def main():
             run = False
     
     pygame.quit()
+
+    images = []
+    for instant in image_togif_list:
+        images.append(imageio.imread(instant))
+    imageio.mimsave(os.path.join('gifs/' + gif_name + '.gif'), images, duration = gif_rate) # modify duration as needed
 
 # testgrid = Toroid( grid=pattern_zoo[figure] )
 
