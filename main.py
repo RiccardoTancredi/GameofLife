@@ -15,14 +15,14 @@ import imageio
 pygame.display.set_caption('Game of Life')
 
 pattern_zoo = {"block" : np.array([[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]]),
-              "bee_hive" : np.array([[0.5, 0, 0, 0, 0, 0.5], [0, 0, 1, 1, 0, 0], [0, 1, 0, 0, 1, 0], [0, 0, 1, 1, 0, 0], [0.5, 0, 0, 0, 0, 0.5]]),
-              "loaf" : np.array([[0.5, 0, 0, 0, 0, 0.5], [0, 0, 1, 1, 0, 0], [0, 1, 0, 0, 1, 0], [0, 0, 1, 0, 1, 0], [0.5, 0, 0, 1, 0, 0], [0.5, 0.5, 0, 0, 0, 0.5]]),
-              "boat" : np.array([[0.5, 0, 0, 0, 0.5], [0, 1, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0.5]]),
-              "tub" : np.array([[0.5, 0, 0, 0, 0.5], [0, 0, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 1, 0, 0], [0.5, 0, 0, 0, 0.5]]),
+              "bee_hive" : np.array([[0, 0, 0, 0, 0, 0], [0, 0, 1, 1, 0, 0], [0, 1, 0, 0, 1, 0], [0, 0, 1, 1, 0, 0], [0, 0, 0, 0, 0, 0]]),
+              "loaf" : np.array([[0, 0, 0, 0, 0, 0], [0, 0, 1, 1, 0, 0], [0, 1, 0, 0, 1, 0], [0, 0, 1, 0, 1, 0], [0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0]]),
+              "boat" : np.array([[0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]]),
+              "tub" : np.array([[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]]),
               
-              "blinker" : np.array([[0.5, 0, 0, 0, 0.5], [0.5, 0, 1, 0, 0.5], [0.5, 0, 1, 0, 0.5], [0.5, 0, 1, 0, 0.5], [0.5, 0, 0, 0, 0.5]]),
-              "toad" : np.array([[0.5, 0.5, 0.5, 0.5, 0.5, 0.5], [0.5, 0, 0, 0, 0, 0], [0, 0, 1, 1, 1, 0], [0, 1, 1, 1, 0, 0], [0, 0, 0, 0, 0, 0.5], [0.5, 0.5, 0.5, 0.5, 0.5, 0.5]]),
-              "beacon" : np.array([[0, 0, 0, 0, 0.5, 0.5], [0, 1, 1, 0, 0.5, 0.5], [0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 1, 0], [0.5, 0.5, 0, 1, 1, 0], [0.5, 0.5, 0, 0, 0, 0]]),
+              "blinker" : np.array([[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]]),
+              "toad" : np.array([[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 1, 1, 1, 0], [0, 1, 1, 1, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]),
+              "beacon" : np.array([[0, 0, 0, 0, 0, 0], [0, 1, 1, 0, 0, 0], [0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 1, 0], [0, 0, 0, 1, 1, 0], [0, 0, 0, 0, 0, 0]]),
 
               "pulsar" : np.array([
                   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
@@ -43,7 +43,21 @@ pattern_zoo = {"block" : np.array([[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0,
                   [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], 
                   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]),
 
-              "glider" : np.array([[0.5,0,0,0,0.5],[0.5,0,1,0,0],[0,0,0,1,0],[0,1,1,1,0],[0,0,0,0,0]])
+              "glider" : np.array([[0,0,0,0,0],[0,0,1,0,0],[0,0,0,1,0],[0,1,1,1,0],[0,0,0,0,0]]),
+              "simil_replicator" : np.array([[0,0,0,0,0,0,0], [0,0,0,1,1,1,0], [0,0,1,0,0,1,0], [0,1,0,0,0,1,0], [0,1,0,0,1,0,0], [0,1,1,1,0,0,0], [0,0,0,0,0,0,0]]),
+              "replicator" : np.array([
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0],
+                [0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])
+
               }
 
 pattern_period = {"block" : 1, #still lifes
@@ -58,7 +72,9 @@ pattern_period = {"block" : 1, #still lifes
 
               "pulsar": 3,
 
-              "glider": 4  #spaceships
+              "glider": 4,  #spaceships
+              "simil_replicator" : 10,
+              "replicator" : 12
               }
 
 name_image = "images/monna_lisa.jpg"
@@ -86,9 +102,9 @@ def prendiInput():
         chiralities = []
 
         filein = input("Which file do you want to open?\n")
-        filein = "initial_patterns/prova2.txt"
+        file_name = 'initial_patterns/'+filein+'.txt'
 
-        with open(filein) as file:
+        with open(file_name) as file:
             for line in file:
                 line = line.replace("\n","")
                 lines.append(line)
@@ -138,9 +154,10 @@ def prendiInput():
         inputSeed = input("Seed?")
         dim_ver = input("Vertical dimension?")
         dim_hor = input("Horizontal dimension?")
+        nativity = input("Nativity?")
         inputDims =[int(dim_ver), int(dim_hor)]
         
-        game = Toroid(seed=int(inputSeed), dimension=inputDims)
+        game = Toroid(seed=int(inputSeed), dimension=inputDims, native=float(nativity))
         return game
     
     else:
@@ -157,13 +174,14 @@ draw = Draw(WIN, game)
 found_histo = []
 
 drawing = True
-iterations = int(50)
+iterations = int(1e6)
 FPS = 60
 
-image_togif_list = [0]*iterations
-gif_name = "animation" #input("Insert name of animation.gif\n")
-gif_rate = [0.1]*iterations
-gif_rate[0] = 3 #first image stays longer in final gif (useful for easter eggs)
+# TO CREATE THE GIFS DECOMMENT THIS CODE
+# image_togif_list = [0]*iterations
+# gif_name = "animation" #input("Insert name of animation.gif\n")
+# gif_rate = [0.1]*iterations
+# gif_rate[0] = 3 #first image stays longer in final gif (useful for easter eggs)
 
 
 def main():
@@ -191,13 +209,14 @@ def main():
         game.grid = game.update()
         if time == 0:
             pygame.time.delay(3000) # To show the initial pattern
+        pygame.time.delay(100) # To slow down the simulation
 
-        #pygame.time.delay(1) # To slow down the simulation
-        image_togif_list[time] = "gif_stills/"+ "frame_" + str(time) + ".png"
-        pygame.image.save(WIN, image_togif_list[time])
+        # TO CREATE THE GIFS DECOMMENT THIS CODE
+        #image_togif_list[time] = "gif_stills/"+ "frame_" + str(time) + ".png"
+        #pygame.image.save(WIN, image_togif_list[time])
 
         time += 1
-        print(time)
+        # print(time)
         if (time/1000).is_integer():
             print(time)
         if time == iterations:
@@ -206,13 +225,13 @@ def main():
     
     pygame.quit()
 
-    images = []
-    for instant in image_togif_list:
-        images.append(imageio.imread(instant))
-    imageio.mimsave(os.path.join('gifs/' + gif_name + '.gif'), images, duration = gif_rate) # modify duration as needed
+    # TO CREATE THE GIFS DECOMMENT THIS CODE
+    # images = []
+    # for instant in image_togif_list:
+    #     images.append(imageio.imread(instant))
+    # imageio.mimsave(os.path.join('gifs/' + gif_name + '.gif'), images, duration = gif_rate) # modify duration as needed
 
 # testgrid = Toroid( grid=pattern_zoo[figure] )
-
 # print(testgrid.Ipad(3))
 
 main()

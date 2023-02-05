@@ -1,4 +1,5 @@
-#This file simulates various seeds and checks the average occupancy found when the seeds stabilize.
+#We run the game with various seeds, starting from different nativities and check how to
+# asintotic occupancy varies with respect to the nativity..
 
 from board import Toroid
 from constants import *
@@ -55,36 +56,32 @@ def findStableOccupancy(inputSeed, nativity, size): #runs a game with initial se
 
 
 def main():
-    grid_sizes = list(np.linspace(5,31,13).astype(int)) #grids dimensions
+    nativities = list(np.linspace(2,98,40).astype(int)) #grids dimensions
     meanOccupancies = [] #average occupancies for each gridsize after stability is reached
-    dev_std = []
-    nSeeds = 100
+    devst = []
+    nSeeds = 300
  
-    #For each grid run the game for 100 patterns and calculate mean 
-
-    # 1) Prima simuli nSeeds --> fai per ogni istante di tempo l'occupancy media --> media l'occupancy sugli ultimi 50 istanti
-    # 2) SImula nSeeds --> per ogni seed guarda quando si stabilizza --> nel loop in cui è stabile fai la media delle occupancies --> media queste medie    
+    #For each nativity run the game for 100 patterns and calculate mean 
 
     time_init, last_time = time.time(), 0
-    for i in range(len(grid_sizes)): #for each grid size
+    for i in range(len(nativities)): #for each nativity
         occupancies = []
         for j in range(nSeeds):
             seed = 2000*i+j
-            occupancies.append(findStableOccupancy(inputSeed= seed, nativity = 37.5, size=grid_sizes[i]))
-            print("Grid size: ", grid_sizes[i], "\tSeed number: ", seed, "\tAt time", time.time() - time_init, "\t duration", time.time() - last_time)
+            occupancies.append(findStableOccupancy(inputSeed= seed, nativity = nativities[i], size=15))
+            print("Nativity: ", nativities[i], "\tSeed number: ", seed, "\tAt time", time.time() - time_init, "\t duration", time.time() - last_time)
             last_time = time.time()
         meanOccupancies.append(np.mean(occupancies))
-        dev_std.append(np.std(occupancies))
-    
+        devst.append(np.std(occupancies))
     #Stampa su file dimensione \t meanOccupancy
-    nameOutputFile = "dims_vs_occ2.txt"
+    nameOutputFile = "nativity_vs_occupancy.txt"
     outputFile =  open(nameOutputFile, "w")
-    for (dim,occ,sigma) in zip(grid_sizes,meanOccupancies, dev_std):
-        outputFile.write(str(dim))
+    for (nat,occ,sigma) in zip(nativities,meanOccupancies, devst):
+        outputFile.write(str(nat))
         outputFile.write("\t")
         outputFile.write(str(occ))
         outputFile.write("\t")
-        outputFile.write(std(sigma))
+        outputFile.write(str(sigma))
         outputFile.write("\n")
     outputFile.close()
 
