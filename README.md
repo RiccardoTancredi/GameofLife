@@ -65,9 +65,12 @@ A most interesting feature in the Game of Life is seeing the board transition fr
 The board.py file contains functions and variables used to analyse the game. We'll define _occupancy_ $o(t)$ as the number of cells alive at a particular time and _heat_ $h(t)$ as the sum of born and dead cells at time $t$.
 The `search_patterns` function counts the number of occurrencies of a given pattern in the whole board at a given moment. We need to take into account the toroidal structure of the board: in order to do so, we expand it with the `Ipad` function. In this way we can find patterns that are split by the edge of the board itself. `search_patterns` also consider flipped and rotated variants of the desired pattern.
 
-![](figures/bee_hive_filter.png)
+<div align="center">
+    <img src=figures/bee_hive_filter.png width=450 height 300>
+    <img src=figures/beeedge.png width=450 height 300>
+</div>
 
-Patterns are stored in filters as the one displayed above. The search_patterns functions search for matches of the filter in the padded board, without considering the grey cells (0.5 value) in the filter. This guarantees a standardized match formatting, since the position of the match refers to the top left corner of the filter, while allowing a flexible filter shape.
+Patterns are stored in filters as the one displayed above. The search_patterns functions search for matches of the filter in the padded board, without considering the grey cells (0.5 value) in the filter. This guarantees a standardized match formatting, since the position of the match refers to the top left corner of the filter, while allowing a flexible filter shape. Let's take for example the right image above. The beehive is found on the edge, thanks to the padding on the board, in the position marked by the red rectangle. The filter (green rectangle) doesn't consider the bottom left square (blue rectangle), thus correcting classifying what it sees as a beehive.
 
 ### draw.py
 
