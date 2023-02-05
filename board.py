@@ -90,18 +90,6 @@ class Toroid:
         
         return new_grid
 
-    def trailblaze(self, time): # "heatmap" ! work in progress !
-        heat = self.grid        #np.zeros((self.length,self.height))
-        for i in range(time):   #voglio istanti diversi = colori diversi e sovrapporre nuovo a vecchio
-            old = np.where(heat>0, heat,0)
-            new = self.update()
-            heat = heat + i*np.where((new-old)>0, (new-old),0)
-        return heat    
-
-    def stampa(self):
-        print(self.grid)
-
-
     # Search patterns
     def Ipad(self, n):
         # n = rows of padding
