@@ -52,6 +52,13 @@ The choices are *random*, *fromTxt* and *easterEgg*.
  	positions the pattern named *loaf* with its top left corner on cell (0,4); the boolean value `chir` ("chirality") chooses whether we want to flip the pattern around the vertical axis (`True`) or keep it as it is written in the dictionary. The function called to generate the grid starting from the .txt file is defined in `pattern_generator.py`.
  
  * *easterEgg*: We added this option just for fun. The terminal asks to input a keyword among a certain list of special patterns (*monalisa*,*einstein*,...). The initial configurations where simply obtained by reducing the size of a photo to the desired number of pixels and then running [Floyd-Steinberg Dithering](https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering) to convert each pixel to a black/white value (code in `image_generator.py`).
+
+## Data analysis
+In this section we present the results we got by analysing the data gathered by running the game on various grid sizes and with different initial configurations.
+
+### Average lifespan
+Since the rules of the game are deterministic, if the board finds itself in the same configurations at two different steps it will enter a loop. We say that the evolution has *stabilized* when it enters an infinite loop. We can therefore define the *lifespan* of an initial configuration as the number of steps it takes for it to enter a loop. [Nathaniel Johnston](http://www.njohnston.ca/2009/07/the-maximal-lifespan-of-patterns-in-conways-game-of-life/) observed that, when fixing a certain nativity value, the distribution of  lifespans tend to decay exponentially. In the following graph we show the distributions we found by running the game on various nativities.
+
  
  
  
