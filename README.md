@@ -3,6 +3,12 @@
 Game of Life - Laboratory of Computational Physics - Mod A
 Feltrin Antonio, Sardo Infirri Giosuè, Tancredi Riccardo, Toso Simone
 
+<div align="center">
+    <img src=figures/einstein.gif width=304 height 404>
+    <img src=figures/mona.gif width=272 height 404>
+    <img src=figures/orecchino.gif width=345 height 404>
+</div>
+
 ## Introduction
 
 *Conway's Game of Life* (GoL) is perhaps the most famous cellular automaton. The board consists of a grid of *cells*, each either *alive* or *dead*. At each step the board is updated according to the following rules:
