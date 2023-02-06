@@ -176,7 +176,7 @@ We have found that the fraction of particles still alives $K=x(t\to\infty)$ goes
 
 ### Pattern frequency
 
-Another possible analysis is the extimation of pattern frequency, an indicator of how many times a specific _pattern_ appears through a run. The [Conway Life wiki](https://conwaylife.com/wiki/Common) doesn't have a clear-cut definition of frequency and commonness, so we'll use the one that follows. At each timestep $t_i$, we count the number of occurrences $N_i(P)$ that a pattern _P_ is found across the grid, and we compute the total findings $N_{tot}(P) = \sum_{i=0}^{t_{max}} N_i(P)$. Patterns found in the same board position _(x,y)_ at consecutive timesteps are thus counted as different findings.
+Another possible analysis is the extimation of pattern frequency, an indicator of how many times a specific _pattern_ appears through a run. The [Conway Life wiki](https://conwaylife.com/wiki/Common) doesn't have a clear-cut definition of frequency and commonness, so we'll use the one that follows. At each timestep $t_i$, we count the number of occurrences $N_i(P)$ that a pattern _P_ is found across the grid, and we compute the total findings $$N_{tot}(P) = \sum^{t_{max}}_{i=0} N_i(P).$$ Patterns found in the same board position _(x,y)_ at consecutive timesteps are thus counted as different findings.
 
 Having defined what are _occurrences_, we can now take the definition of relative frequency as written in the [LifeWiki](https://conwaylife.com/wiki/Relative_frequency): occurrences of a particular item divided by the total occurrences of all items in a set.
 
