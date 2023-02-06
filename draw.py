@@ -3,9 +3,6 @@ import pygame
 from constants import *
 
 C_BLACK = (0, 0, 0)
-C_RED = (255, 0, 0)
-C_GREEN = (0, 255, 0)
-C_BLUE = (0, 0, 255)
 C_WHITE = (255, 255, 255)
 
 class Draw:
@@ -34,10 +31,6 @@ class Draw:
         # print("Dentro draw la posizione vale: ", (row, col))
         if color == WHITE:
             image = C_WHITE
-        # elif color == GREEN:
-        #     image = C_GREEN
-        # elif color == BLUE:
-        #     image = C_BLUE
         else:
             image = C_BLACK
         pygame.draw.rect(self.window, image, pygame.Rect(col, row, 1.5*RADIUS, 1.5*RADIUS))

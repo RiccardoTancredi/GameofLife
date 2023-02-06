@@ -3,7 +3,7 @@ from constants import*
 from image_generator import gridFromImage
 
 class Toroid:
-    def __init__(self, grid=None, seed=None, period=None, image=None, dimension=None, native=50): 
+    def __init__(self, grid=None, seed=None, image=None, dimension=None, native=50): 
         self.seed = np.random.seed(seed) if seed else np.random.seed(123)
         self.image = image
         self.native = native
@@ -14,7 +14,6 @@ class Toroid:
         else:
             self.length, self.height = dimension if dimension else [ROWS, COLS]
             self.grid = self.create_grid()
-        self.period = period
         self.occupancy = np.sum(self.grid)
         self.heat = 0
 
