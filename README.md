@@ -15,7 +15,7 @@ Feltrin Antonio, Sardo Infirri Giosuè, Tancredi Riccardo, Toso Simone
 
 1. Survivals: An alive cell with two or three neighbours survives for the next generation.
 2. Births: A cell with three live neighbours becomes alive.
-3. Deaths: An alive cell with more than three live neighbours dies from overpopulation and an alive cell with only one neighbour dies from isolation (goes from *alive* to *dead*). 
+3. Deaths: An alive cell with more than three live neighbours dies from overpopulation and an alive cell with only one or zero neighbours dies from isolation (goes from *alive* to *dead*). 
 
 ```python
 #1st rule: survivals
