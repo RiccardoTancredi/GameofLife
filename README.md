@@ -127,19 +127,19 @@ Since the rules of the game are deterministic, if the board finds itself in the 
     <img src=plot_analysis/lifespan_fit_625.png width=152>
 </div>
 
-We are also interested in checking how the *average* lifespan varies with respect to the nativity. By varying the nativity in the range ($5\%, 98\%$) and averaging across 1000 games on each nativity we get the following graph. The data for this graph was generated in `many_nativities.py`.
+We are also interested in checking how the *average* lifespan varies with respect to the nativity. By varying the nativity in the range ( $5$%, $98$% ) and averaging across 1000 games on each nativity we get the following graph. The data for this graph was generated in `many_nativities.py`.
 
 <div align="center">
     <img src=plot_analysis/nativity_lifespan.png height=202>
 
 </div>
 
-We see that the lifespan hits a maximum around $40\%$ (in particular, the maximum value obtained corresponds to a nativity of $37.5\%$).This result is not unexpected, considering that a new cell is born if $3/8 = 37.5\%$ of its neighbours are alive, as observed [in this blog post](http://www.nathanieljohnston.com/2009/06/longest-lived-soup-density-in-conways-game-of-life/).
+We see that the lifespan hits a maximum around $40\%$ (in particular, the maximum value obtained corresponds to a nativity of $37.5\%$).This result is not unexpected, considering that a new cell is born if its fraction of alive neighbours is $3/8 = 37.5$% of its neighbours are alive, as observed [in this blog post](http://www.nathanieljohnston.com/2009/06/longest-lived-soup-density-in-conways-game-of-life/).
 *This analysis was performed in the* `lifespan.py` *notebook.*
 
 ### Asymptotic occupancy
 
-As the grid evolves, occupancy decreases until the grid enters a loop. We can take the average occupancy during this loop and see how it behaves with respect to the initial nativity. For this purpose, we ran the game with nativities between $5\%$ and $98\%$, using 300 different initial configurations for each nativity and calculating the asymptotic occupancies. The data for this analysis was generated in `nativity_occupancy.py`. One can see the behaviour of the data in the following plot:
+As the grid evolves, occupancy decreases until the grid enters a loop. We can take the average occupancy during this loop and see how it behaves with respect to the initial nativity. For this purpose, we ran the game with nativities between 5% and 98%, using 300 different initial configurations for each nativity and calculating the asymptotic occupancies. The data for this analysis was generated in `nativity_occupancy.py`. One can see the behaviour of the data in the following plot:
 
 <div align="center">
     <img src=plot_analysis/nativity_occupancy.png height=280>
@@ -147,7 +147,7 @@ As the grid evolves, occupancy decreases until the grid enters a loop. We can ta
     <!-- <img src=plot_analysis/linear_fit.png height=280> -->
 </div>
 
-This result is in accordance with the result found [in the following paper](https://www.sciencedirect.com/science/article/abs/pii/037843719190277J) and pictured in the previous image. The graph shows that, for a nativity of $37.5\%$, we expect that the final occupancy is directly proportional to the grid size $n \times n$, with a coefficient of around $0.3$. One can see this behaviour by plotting the asymptotic occupacy with respect to the area of the grid, as pictured below. The data is generated in `occupances_analysis.py`.
+This result is in accordance with the result found [in the following paper](https://www.sciencedirect.com/science/article/abs/pii/037843719190277J) and pictured in the previous image. The graph shows that, for a nativity of 37.5%, we expect that the final occupancy is directly proportional to the grid size $n \times n$, with a coefficient of around $0.3$. One can see this behaviour by plotting the asymptotic occupacy with respect to the area of the grid, as pictured below. The data is generated in `occupances_analysis.py`.
 
 <div align="center">
     <img src=plot_analysis/linear_fit.png height=300>
