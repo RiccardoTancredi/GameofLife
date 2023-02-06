@@ -1,3 +1,5 @@
+#File to draw in pygame
+
 import pygame
 
 from constants import *
@@ -6,7 +8,7 @@ C_BLACK = (0, 0, 0)
 C_WHITE = (255, 255, 255)
 
 class Draw:
-    def __init__(self, window, game):
+    def __init__(self, window, game): # Initialize the grid
         self.window = window
         self.game = game
 
@@ -22,7 +24,7 @@ class Draw:
     def draw_field(self):
         self.window.fill(C_BLACK)
 
-    def draw_cells(self):
+    def draw_cells(self): 
         for (row, col), cell in self.game.get_cells():
             color = BLACK if cell == 0 else WHITE
             self.draw_cell(color, row, col)

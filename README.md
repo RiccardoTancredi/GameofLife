@@ -62,8 +62,8 @@ In the Game of Life the board transitions from a disordered soup to a constellat
 * oscillators: they change forms, returning cycliclally to the first one every _T_ iterations. _T_ is called _period_.
 * spaceships: they travel across the board.
 
-The `board.py` file contains functions and variables used to analyse the game. We'd defined _occupancy_ $o(t)$ as the number of cells alive at a particular time and _heat_ $h(t)$ as the sum of born and dead cells at time $t$.
-The `search_patterns` function counts the number of occurrencies of a given pattern in the whole board at a given moment. We need to take into account the toroidal structure of the board: in order to do so, we expand it with the `Ipad` function. In this way we can find patterns that are split by the edge of the board. `search_patterns` also considers flipped and rotated variants of the desired pattern.
+The `board.py` file contains functions and variables used to analyse the game. We'd defined _occupancy_ $o(t)$ as the number of cells alive at a particular time and _heat_ $h(t)$ as the sum of born and dead cells between time $t-1$ and $t$.
+The `search_patterns` function counts the number of occurrences of a given pattern in the whole board at a given moment. We need to take into account the toroidal structure of the board: in order to do so, we expand it with the `Ipad` function. `Ipad` pads the board in a way that satisfies periodic boundary conditions. In this way we can find patterns that are split by the edge of the board. `search_patterns` also considers flipped and rotated variants of the desired pattern.
 
 <div align="center">
     <img src=figures/bee_hive_filter.png width=450 height 300>
@@ -89,7 +89,7 @@ In the file `main.py` we allow the user to run the game, choosing how to initial
 
 The choices are *random*, *fromTxt* and *easterEgg*.
 
-* *random*: randomly initialize the grid. The user is then asked to input the seed for the random number generator and the vertical and horizontal dimension of the grid, followed by the initial nativity (i.e. the percentage of alive cell at the beginning of the game).
+* *random*: randomly initialize the grid. The user is then asked to input the seed for the random number generator and the vertical and horizontal dimension of the grid, followed by the initial nativity (i.e. the expected percentage of alive cells at the beginning of the game).
 * *fromTxt*: initialize the grid to a specific configuration described in a `.txt` file, stored by the user in the `initial_patterns` folder. The format in which the file has to be written is the following:
 
   ```txt
@@ -157,13 +157,14 @@ The angular coefficient is $0.0317 \pm 0.0003$, in accordance with the results f
 
 ### Occupancy and Heat analysis
 
-Togther with the _Average lifespan_ analysis we have have also computed an analysis based on **occupancy** and **heat**.
+Together with the _Average lifespan_ analysis we have also computed an analysis based on **occupancy** and **heat**.
+The following results concerning occupancy, heat and pattern frequency come from the `occurences_lifetimes.ipynb` notebook.
 
 <div align="center">
     <img src=plots/15_15.png height=300>
 </div>
 
-We can see how, as expected by its definition, heat follows occupancy. The fit is performed by considering a model for population expansion with a maximum carrying capacity $K$, given by the following logistic equation 
+We can see how, as expected by its definition, heat follows occupancy. The fit is performed by considering a model for population expansion with a maximum carrying capacity $K$, given by the following logistic equation
 
 $$
 \dot{x}=rx(1-\frac{x}{K})
@@ -175,7 +176,7 @@ We have found that the fraction of particles still alives $K=x(t\to\infty)$ goes
 
 ### Pattern frequency
 
-Another possible analysis is the extimation of pattern frequency, an indicator of how many times a specific _pattern_ appears through a run. The [Conway Life wiki](https://conwaylife.com/wiki/Common) doesn't have a clear-cut definition of frequency and commonness, so we'll use the one that follows. At each timestep $t_i$, we count the number of occurrencies $N_i(P)$ that a pattern _P_ is found across the grid, and we compute the total findings $N_{tot}(P) = \sum_{i=0}^{t_{max}} N_i(P)$. Patterns found in the same board position _(x,y)_ at consecutive timesteps are thus counted as different findings.
+Another possible analysis is the extimation of pattern frequency, an indicator of how many times a specific _pattern_ appears through a run. The [Conway Life wiki](https://conwaylife.com/wiki/Common) doesn't have a clear-cut definition of frequency and commonness, so we'll use the one that follows. At each timestep $t_i$, we count the number of occurrences $N_i(P)$ that a pattern _P_ is found across the grid, and we compute the total findings $N_{tot}(P) = \sum_{i=0}^{t_{max}} N_i(P)$. Patterns found in the same board position _(x,y)_ at consecutive timesteps are thus counted as different findings.
 
 Having defined what are _occurrences_, we can now take the definition of relative frequency as written in the [LifeWiki](https://conwaylife.com/wiki/Relative_frequency): occurrences of a particular item divided by the total occurrences of all items in a set.
 

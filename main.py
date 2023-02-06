@@ -1,3 +1,5 @@
+#Main file, used to play the game, interactiong with the terminal and with most of the other files in the repository
+
 import pygame
 
 from board import Toroid
@@ -14,6 +16,8 @@ import imageio
 # WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Game of Life')
 
+
+#Pattern zoo: set of patterns we implemented, represented as numpy arrays
 pattern_zoo = {"block" : np.array([[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]]),
               "bee_hive" : np.array([[0, 0, 0, 0, 0, 0], [0, 0, 1, 1, 0, 0], [0, 1, 0, 0, 1, 0], [0, 0, 1, 1, 0, 0], [0, 0, 0, 0, 0, 0]]),
               "loaf" : np.array([[0, 0, 0, 0, 0, 0], [0, 0, 1, 1, 0, 0], [0, 1, 0, 0, 1, 0], [0, 0, 1, 0, 1, 0], [0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0]]),
@@ -84,18 +88,14 @@ pattern = pattern_zoo[figure]
 seed = 123
 
 
-#Scrivi "Inizializzamo la griglia"
-#Se input == random seed dims fraction --> fai griglia random di dimensioni dims con seed seed e frazione fraction
-#Se input == "monalisa", ... --> fai griglia pescando l'immagine (già fatta, facciamo un archivio)
-#Se input == fromTxt --> fai griglia leggendo le istruzioni da un file di testo: patternGenerator(patternArray, posArray, chirArray, dimensions, random = None)
-#Possibilità di aggiungere pattern durante l'esecuzione?
 
-def prendiInput():
+
+def prendiInput(): # This initiates the game according to instructions given by the user
     print("Let's initialize the grid\n")
-    print("Choose among random, fromTxt and easterEgg")
+    print("Choose among us: random, fromTxt and easterEgg") 
     comando = input("What do you want to do?\n")
 
-    if comando == "fromTxt":
+    if comando == "fromTxt": #Option to load grid description starting from a txt. See README for info on how to format the file
         lines = []
         patterns = []
         positions = []
@@ -108,26 +108,25 @@ def prendiInput():
             for line in file:
                 line = line.replace("\n","")
                 lines.append(line)
-        #first row contains dimensions is written as dimx \t dimy
 
-        dimsString = lines[0].split(",")
+        dimsString = lines[0].split(",") # First row contains dimensions written as dimx \t dimy
         dims = [int(dimsString[0]), int(dimsString[1])]
-        if_random = (lines[1] == "True")
+        if_random = (lines[1] == "True") # Second line gives the random option (to be displayed around the existing patterns)
         lines.pop(0)
         lines.pop(0)
         
         for line in lines:
-            #each row contains patterns, positions, chirs
+            # Each row contains patterns, positions, chirs
             elm = line.split(",")
-            patterns.append(pattern_zoo[elm[0]]) #pattern name
-            positions.append([int(elm[1]), int(elm[2])]) #pattern position, taken as int
-            chiralities.append(elm[3] == "True") #chiralities taken as boolean value
+            patterns.append(pattern_zoo[elm[0]]) # Pattern name
+            positions.append([int(elm[1]), int(elm[2])]) # Pattern position, taken as int
+            chiralities.append(elm[3] == "True") # Chiralities taken as boolean value
 
         griglia = patternGenerator(patterns, positions, chiralities, dims, random = if_random)
         game = Toroid(grid = griglia)
         return game
 
-    elif comando == "easterEgg": #pescala dall'archivio
+    elif comando == "easterEgg": # Takes the loaded image from the repository and runs the game.
         print("Our library of images is:\n monalisa\norecchino\neinstein\nquantum\n")
 
         figure = input("Which one do you choose?\n")
@@ -136,21 +135,21 @@ def prendiInput():
         game = Toroid(grid = griglia)
         return game
     
-    elif comando == "amogus": 
+    elif comando == "amogus": # Real easter egg
         print("Amogus took possess of your pc!\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\nNow I'm moving here\n")
         file_name = 'images_txt/amogus.txt'
         griglia = np.loadtxt(file_name, delimiter=" ")
         game = Toroid(grid = griglia)
         return game
 
-    elif comando == "parisi": 
+    elif comando == "parisi": # Other easter egg
         print("Questo gioco è complesso, ed ora me ne vado, PUF!")
         file_name = 'images_txt/parisi.txt'
         griglia = np.loadtxt(file_name, delimiter=" ")
         game = Toroid(grid = griglia)
         return game
 
-    elif comando == "random":
+    elif comando == "random": # Creates a random grid, with specified dimensions, seed and nativity
         inputSeed = input("Seed?")
         dim_ver = input("Vertical dimension?")
         dim_hor = input("Horizontal dimension?")
@@ -161,15 +160,15 @@ def prendiInput():
         return game
     
     else:
-        print("Impara a scrivere! Ora farò come mi aggrada\n")
+        print("Impara a scrivere! Ora farò come mi aggrada\n") # In case it doesn't get a known input it makes a random image with random shape
         seedR = np.random.randint(0, 1000)
         dim_hor, dim_ver = np.random.randint(10, 50), np.random.randint(10, 50)
         game = Toroid(seed=seedR, dimension=[int(dim_ver), int(dim_hor)])
         return game
 
-game = prendiInput()
+game = prendiInput() # comment this line and de-comment the one below to give a set input board
 #game = Toroid(seed= 101, dimension=[30,30],native=38)
-WIN = pygame.display.set_mode((game.height*SQUARE_SIZE, game.length*SQUARE_SIZE))
+WIN = pygame.display.set_mode((game.height*SQUARE_SIZE, game.length*SQUARE_SIZE)) #creates window for animation
 draw = Draw(WIN, game)
 found_histo = []
 
@@ -191,7 +190,7 @@ def main():
     clock = pygame.time.Clock()
     pause = False
 
-    while run:
+    while run: # Pygame routine
         if drawing:
             clock.tick(FPS)
             draw.update() 

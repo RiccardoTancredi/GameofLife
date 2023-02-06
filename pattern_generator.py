@@ -1,11 +1,14 @@
+#In this file we define the functions which, starting from an input .txt file, creates the desired grid. 
+#For info on how to format the .txt file check README
+
 import numpy as np
 import matplotlib.pyplot as plt
 
-def chiral(pattern, direction):    # direction could be up/down (0) or left/right (1)
+def chiral(pattern, direction):    # Flip pattern
     return np.flip(pattern, direction)
 
 
-def addPattern(matrix, occupiedMatrix_old, pos, pattern_old, random, chirality = False): #adds pattern to input matrix
+def addPattern(matrix, occupiedMatrix_old, pos, pattern_old, random, chirality = False): # Adds pattern to input matrix (is called many times in the main)
     #go to pos (if it is in matrix) and add the pattern. 
     dims = matrix.shape #dimensions of matrix
     patternDims = pattern_old.shape #dimensions of pattern
@@ -13,20 +16,20 @@ def addPattern(matrix, occupiedMatrix_old, pos, pattern_old, random, chirality =
     occupiedMatrix = occupiedMatrix_old.copy()
     pattern = pattern_old.copy()
 
-    if chirality: #switch it 
-        pattern = chiral(pattern, 1) #switches left/right
+    if chirality: # Switches it 
+        pattern = chiral(pattern, 1) # Switches left/right
     
-    if pos[0] > dims[0] and pos[1] > dims[1]: #1. Check if pos is in matrix
+    if pos[0] > dims[0] and pos[1] > dims[1]: # 1. Check if pos is in matrix
         print("Position has to be in matrix!\n")
         return matrix
 
-    else: #2. Take pattern --> take every square in pattern and calculate its position in matrix --> change accordingly    
-        canWrite = True #checks if it can write the pattern
+    else: # 2. Take pattern --> take every square in pattern and calculate its position in matrix --> change accordingly    
+        canWrite = True # Checks if it can write the pattern
         for i in range(patternDims[0]):
             for j in range(patternDims[1]):
-                newPos = [(pos[0]+i)%dims[0],(pos[1]+j)%dims[1]] #calculates where this square will end up on the toroid
+                newPos = [(pos[0]+i)%dims[0],(pos[1]+j)%dims[1]] # Calculates where this square will end up on the toroid
                 if occupiedMatrix[newPos[0], newPos[1]]:
-                    print("You were overwriting a previous pattern")
+                    print("You were overwriting a previous pattern") # Checks if the actual pattern is going to be loaded on another pattern
                     canWrite = False
                     break
                 else:
@@ -39,7 +42,7 @@ def addPattern(matrix, occupiedMatrix_old, pos, pattern_old, random, chirality =
             return matrix, occupiedMatrix_old
 
 def patternGenerator(patternArray, posArray, chirArray, dimensions, random = None):
-    #start from zero matrix --> add patterns in positions contained in array --> if random put randomly zeros and ones
+    # Start from zero matrix --> add patterns in positions contained in array --> if random put randomly zeros and ones
     startingMatrix = np.zeros(dimensions)
     occupiedMatrix = np.full(dimensions, False)
 
@@ -51,7 +54,7 @@ def patternGenerator(patternArray, posArray, chirArray, dimensions, random = Non
     
     return startingMatrix
 
-# def main():
+# def main(): # Main to check the good functioning of the program
 #     patterns = [pattern_zoo['block'],pattern_zoo['loaf'],pattern_zoo['tub']]
 #     positions = [(0,0),(0,4),(6,0)]
 #     chiralities = [False, True, False]

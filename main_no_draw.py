@@ -1,3 +1,6 @@
+# Twin version of main.py, used for simulations and without pygame
+# For explanation on this file, go in "main.py"
+
 from board import Toroid
 from constants import *
 import numpy as np

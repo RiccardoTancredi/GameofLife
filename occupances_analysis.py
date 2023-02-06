@@ -1,11 +1,11 @@
-#This file simulates various seeds and checks the average occupancy found when the seeds stabilize.
+# This file simulates various seeds and checks the average occupancy found when in the loop the seed stabilizes.
 
 from board import Toroid
 from constants import *
 import numpy as np
 import time
 
-def grid_to_bin(matrice):
+def grid_to_bin(matrice): #Converts grid to string of 0s and 1s
     dimensions = matrice.shape
     output = ''
     for i in range(dimensions[0]):
@@ -15,23 +15,23 @@ def grid_to_bin(matrice):
     return output
 
 
-def findStableOccupancy(inputSeed, nativity, size): #runs a game with initial seed inputSeed and nativity = nativity
-    nSteps = 1000 #number of steps in which we look at evolution
+def findStableOccupancy(inputSeed, nativity, size): # runs a game with initial seed inputSeed and nativity = nativity
+    nSteps = 1000 # number of steps in which we look at evolution
     configurations = np.array([])
-    lifespan = 1000 #by default say 1000, so if you don't find it you return 1000
+    lifespan = 1000 # by default say 1000, so if you don't find it you return 1000
 
-    game = Toroid(seed = inputSeed, dimension = [size,size], native = nativity) #game to play 
+    game = Toroid(seed = inputSeed, dimension = [size,size], native = nativity) # game to play 
     stepsTaken = 0
     trovato = False
     period=1
 
     while stepsTaken < nSteps and not trovato:
-        stringaNuova = grid_to_bin(game.grid) #calcola la configurazione attuale
+        stringaNuova = grid_to_bin(game.grid)
         configurations = np.append(configurations, stringaNuova)
-        game.grid = game.update() #update la griglia
-        #Checks if equals
+        game.grid = game.update()
+        
         if stepsTaken > 0:
-            for j in range(len(configurations)-1): #guarda quelli prima
+            for j in range(len(configurations)-1):
                 if(configurations[j] == stringaNuova):
                     lifespan = j
                     trovato = True
@@ -51,19 +51,16 @@ def findStableOccupancy(inputSeed, nativity, size): #runs a game with initial se
         media += configurations[lifespan+i].count('1')
         
     media /= period
-    return media
+    return media #return average over period
 
 
 def main():
-    grid_sizes = list(np.linspace(5,31,13).astype(int)) #grids dimensions
-    meanOccupancies = [] #average occupancies for each gridsize after stability is reached
+    grid_sizes = list(np.linspace(5,31,13).astype(int))
+    meanOccupancies = [] # average occupancies for each gridsize after stability is reached
     dev_std = []
     nSeeds = 100
  
-    #For each grid run the game for 100 patterns and calculate mean 
-
-    # 1) Prima simuli nSeeds --> fai per ogni istante di tempo l'occupancy media --> media l'occupancy sugli ultimi 50 istanti
-    # 2) SImula nSeeds --> per ogni seed guarda quando si stabilizza --> nel loop in cui è stabile fai la media delle occupancies --> media queste medie    
+    #For each grid run the game for nSeeds patterns and calculate mean 
 
     time_init, last_time = time.time(), 0
     for i in range(len(grid_sizes)): #for each grid size
@@ -76,7 +73,7 @@ def main():
         meanOccupancies.append(np.mean(occupancies))
         dev_std.append(np.std(occupancies))
     
-    #Stampa su file dimensione \t meanOccupancy
+    #Prints on a file dimensione \t meanOccupancy and sigma (used for fit)
     nameOutputFile = "dims_vs_occ2.txt"
     outputFile =  open(nameOutputFile, "w")
     for (dim,occ,sigma) in zip(grid_sizes,meanOccupancies, dev_std):
