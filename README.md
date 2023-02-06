@@ -4,9 +4,9 @@ Game of Life - Laboratory of Computational Physics - Mod A
 Feltrin Antonio, Sardo Infirri Giosuè, Tancredi Riccardo, Toso Simone
 
 <div align="center">
-    <img src=figures/einstein.gif width=304 height 404>
-    <img src=figures/mona.gif width=272 height 404>
-    <img src=figures/orecchino.gif width=345 height 404>
+    <img src=figures/einstein.gif width=152 height 202>
+    <img src=figures/mona.gif width=136 height 202>
+    <img src=figures/orecchino.gif width=172 height 202>
 </div>
 
 ## Introduction
