@@ -1,6 +1,7 @@
 # Game of Life
 
 Game of Life - Laboratory of Computational Physics - Mod A
+
 Feltrin Antonio, Sardo Infirri Giosuè, Tancredi Riccardo, Toso Simone
 
 <div align="center">
@@ -58,8 +59,25 @@ The class contains various methods, called either when running the game or durin
 
 In the Game of Life the board transitions from a disordered soup to a constellation of ordered structures (patterns).  Patterns can live forever if nothing interferes with them, and they belong to one of three classes:
 
-* still lifes: as the name suggests, they stay still.
+<div /align = "center">
+    <img src=figures/Block.png>
+    <img src=figures/Loaf.png>
+    <img src=figures/Boat.png>
+    <img src=figures/Ship.png>
+    <img src=figures/Tub.png>
+    <img src=figures/Pond.png>
+</div>
+
+* still lifes: as the name suggests, they stay still. In order: Block, Loaf, Boat, Ship, Tub, Pond.
+
+    ![](figures/Blinker.gif "Blinker")
+	*Blinker*
+
 * oscillators: they change forms, returning cycliclally to the first one every _T_ iterations. _T_ is called _period_.
+
+   ![](figures/Glider.gif)
+	*Glider*
+
 * spaceships: they travel across the board.
 
 The `board.py` file contains functions and variables used to analyse the game. We'd defined _occupancy_ $o(t)$ as the number of cells alive at a particular time and _heat_ $h(t)$ as the sum of born and dead cells between time $t-1$ and $t$.
@@ -147,7 +165,7 @@ As the grid evolves, occupancy decreases until the grid enters a loop. We can ta
     <!-- <img src=plot_analysis/linear_fit.png height=280> -->
 </div>
 
-This result is in accordance with the result found [in the following paper](https://www.sciencedirect.com/science/article/abs/pii/037843719190277J) and pictured in the previous image. The graph shows that, for a nativity of 37.5%, we expect that the final occupancy is directly proportional to the grid size $n \times n$, with a coefficient of around $0.3$. One can see this behaviour by plotting the asymptotic occupacy with respect to the area of the grid, as pictured below. The data is generated in `occupances_analysis.py`.
+This result is in accordance with the result found [in the following paper](https://www.sciencedirect.com/science/article/abs/pii/037843719190277J) and pictured in the previous image (on the right). The graph shows that, for a nativity of 37.5%, we expect that the final occupancy is directly proportional to the grid size $n \times n$, with a coefficient of around $0.3$. One can see this behaviour by plotting the asymptotic occupacy with respect to the area of the grid, as pictured below. The data is generated in `occupances_analysis.py`.
 
 <div align="center">
     <img src=plot_analysis/linear_fit.png height=300>
@@ -172,7 +190,7 @@ $$
 
  where $r$ is the rate of reproduction in absence of density regulation.
 Even though this model is not actually built for the game of life itself which has its own deterministic rules, the solution to the differential equation, $x(t)=\frac{Kx_0e^{rt}}{K+x_0(e^{rt}-1)}$ represents a good fit of our data, since an exponeential fit does not take into account the fact that, as shown in all our simulations, there can still be a fraction of alive particles, even after long time: this is of course reasonable since we are considering finite dimension grids.
-We have found that the fraction of particles still alives $K=x(t\to\infty)$ goes quadratic with the dimension of the grid, which is coherent with what we found in the section *Asymptotic occupancy*.
+We have found that the fraction of particles still alive $K=x(t\to\infty)$ goes quadratic with the dimension of the grid, which is coherent with what we found in the section *Asymptotic occupancy*.
 
 ### Pattern frequency
 
