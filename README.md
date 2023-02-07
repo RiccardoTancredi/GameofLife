@@ -5,9 +5,9 @@ Game of Life - Laboratory of Computational Physics - Mod A
 Feltrin Antonio, Sardo Infirri Giosuè, Tancredi Riccardo, Toso Simone
 
 <div align="center">
-    <img src=figures/einstein.gif width=152 height 202>
-    <img src=figures/mona.gif width=136 height 202>
-    <img src=figures/orecchino.gif width=172 height 202>
+    <img src=figures/einstein.gif width=152 height=202>
+    <img src=figures/mona.gif width=136 height=202>
+    <img src=figures/orecchino.gif width=172 height=202>
 </div>
 
 ## Introduction
@@ -84,8 +84,8 @@ The `board.py` file contains functions and variables used to analyse the game. W
 The `search_patterns` function counts the number of occurrences of a given pattern in the whole board at a given moment. We need to take into account the toroidal structure of the board: in order to do so, we expand it with the `Ipad` function. `Ipad` pads the board in a way that satisfies periodic boundary conditions. In this way we can find patterns that are split by the edge of the board. `search_patterns` also considers flipped and rotated variants of the desired pattern.
 
 <div align="center">
-    <img src=figures/bee_hive_filter.png width=450 height=300>
-    <img src=figures/beeedge.png width=450 height=300>
+    <img src=figures/bee_hive_filter.png width=420 height=300>
+    <img src=figures/beeedge.png width=380 height=300>
 </div>
 
 Patterns are stored in rectangular filters as the one displayed above. The `search_patterns` function looks for matches of the filter in the padded board, without considering the grey cells (0.5 value) in the filter. This guarantees a standardized match formatting, since the position of the match refers to the top left corner of the filter, while allowing a flexible filter shape. Let's take for example the right image above: the _beehive_ is found on the edge, thanks to the padding on the board, in the position marked by the red rectangle. The filter (green rectangle) doesn't consider the bottom left square (blue rectangle), thus correctly classifying what it sees as a _beehive_.
@@ -138,21 +138,23 @@ In this section we present the results we got by analysing the data gathered by 
 Since the rules of the game are deterministic, if the board finds itself in the same configuration at two different steps it will enter a loop. We say that the evolution has *stabilized* when it enters an infinite loop. We can therefore define the *lifespan* of an initial configuration as the number of steps it takes for it to enter a loop. [Nathaniel Johnston](http://www.njohnston.ca/2009/07/the-maximal-lifespan-of-patterns-in-conways-game-of-life/) observed that, when fixing a certain nativity value, the distribution of  lifespans tend to decay exponentially. We recall that the *nativity* is the probability for a cell to be alive in the initial configuration. In the following graph we show the distributions we found by running the game on various nativities, keeping a grid of $15 \times 15$. The weighted average of the exponents of the fits is $-0.0118 \pm  0.0001$; all the exponents are within $3\sigma$ of the weighted mean, the nativity does not seem to affect the decay of the lifespan distribution. The data was generated in `lifespan.py`.
 
 <div align="center">
-    <img src=plot_analysis/lifespan_fit_125.png width=152>
-    <img src=plot_analysis/lifespan_fit_250.png width=152>
-    <img src=plot_analysis/lifespan_fit_375.png width=152>
-    <img src=plot_analysis/lifespan_fit_500.png width=152>
-    <img src=plot_analysis/lifespan_fit_625.png width=152>
+    <img src=plot_analysis/lifespan_fit_125.png height=220>
+    <img src=plot_analysis/lifespan_fit_250.png height=220>
+    <img src=plot_analysis/lifespan_fit_375.png height=220>
+</div>
+
+<div align="center"> 
+    <img src=plot_analysis/lifespan_fit_500.png height=220>
+    <img src=plot_analysis/lifespan_fit_625.png height=220>
 </div>
 
 We are also interested in checking how the *average* lifespan varies with respect to the nativity. By varying the nativity in the range ( $5$%, $98$% ) and averaging across 1000 games on each nativity we get the following graph. The data for this graph was generated in `many_nativities.py`.
 
 <div align="center">
-    <img src=plot_analysis/nativity_lifespan.png height=202>
-
+    <img src=plot_analysis/nativity_lifespan.png height=270>
 </div>
 
-We see that the lifespan hits a maximum around $40\%$ (in particular, the maximum value obtained corresponds to a nativity of $37.5\%$).This result is not unexpected, considering that a new cell is born if its fraction of alive neighbours is $3/8 = 37.5$% of its neighbours are alive, as observed [in this blog post](http://www.nathanieljohnston.com/2009/06/longest-lived-soup-density-in-conways-game-of-life/).
+We see that the lifespan hits a maximum around $40\%$ (in particular, the maximum value obtained corresponds to a nativity of $39.5\%$).This result is not unexpected, considering that a new cell is born if its fraction of alive neighbours is $3/8 = 37.5$% of its neighbours are alive, as observed [in this blog post](http://www.nathanieljohnston.com/2009/06/longest-lived-soup-density-in-conways-game-of-life/).
 *This analysis was performed in the* `lifespan.py` *notebook.*
 
 ### Asymptotic occupancy
@@ -161,7 +163,7 @@ As the grid evolves, occupancy decreases until the grid enters a loop. We can ta
 
 <div align="center">
     <img src=plot_analysis/nativity_occupancy.png height=280>
-    <img src=figures/nativity_occupancy.jpg height=280>
+    <img src=figures/nativity_occupancy.jpg height=250>
     <!-- <img src=plot_analysis/linear_fit.png height=280> -->
 </div>
 
@@ -194,7 +196,7 @@ We have found that the fraction of particles still alive $K=x(t\to\infty)$ goes 
 
 ### Pattern frequency
 
-Another possible analysis is the extimation of pattern frequency, an indicator of how many times a specific _pattern_ appears through a run. The [Conway Life wiki](https://conwaylife.com/wiki/Common) doesn't have a clear-cut definition of frequency and commonness, so we'll use the one that follows. At each timestep $t_i$, we count the number of occurrences $N_i(P)$ that a pattern _P_ is found across the grid, and we compute the total findings $$N_{tot}(P) = \sum^{t_{max}}_{i=0} N_i(P).$$ Patterns found in the same board position _(x,y)_ at consecutive timesteps are thus counted as different findings.
+Another possible analysis is the extimation of pattern frequency, an indicator of how many times a specific _pattern_ appears through a run. The [Conway Life Wiki](https://conwaylife.com/wiki/Common) doesn't have a clear-cut definition of frequency and commonness, so we'll use the one that follows. At each timestep $t_i$, we count the number of occurrences $N_i(P)$ that a pattern _P_ is found across the grid, and we compute the total findings $$N_{tot}(P) = \sum^{t_{max}}_{i=0} N_i(P).$$ Patterns found in the same board position _(x,y)_ at consecutive timesteps are thus counted as different findings.
 
 Having defined what are _occurrences_, we can now take the definition of relative frequency as written in the [LifeWiki](https://conwaylife.com/wiki/Relative_frequency): occurrences of a particular item divided by the total occurrences of all items in a set.
 
@@ -202,14 +204,18 @@ We have run many simulations in order to either estimate these frequencies but a
 
 After the before mentioned analysis on `average lifespan`, we have cycled among 100 seeds and 6 different grid squared dimensions (from `15x15` to `40x40`) for _500_ timesteps. Using the `search_pattern` function we have looked for the most common patterns. [Achim Flammenkamp](http://wwwhomes.uni-bielefeld.de/achim/freq_top_life.html) compiled a list of the 100 most common _still lifes_, _oscillators_ and _spaceships_ by evolving almost 2 millions seeds on a 2048×2048 torus.
 
+<div align="center">
+
 | dimension |    block |  blinker | bee_hive |      loaf |      boat |        tub |        pond |       ship |        toad |      beacon |
 | :-------- | -------: | -------: | -------: | --------: | --------: | ---------: | ----------: | ---------: | ----------: | ----------: |
-| [15, 15]  | 0.355779 | 0.297304 | 0.153612 | 0.0834919 | 0.0748238 |  0.0155743 | 5.28541e-05 |  0.0087914 |  0.00017618 |  0.00340028 |
-| [20, 20]  |  0.36327 | 0.352436 | 0.110703 | 0.0731753 | 0.0681511 | 0.00936207 |  0.00780006 | 0.00944166 | 0.000139287 | 0.000149236 |
-| [25, 25]  | 0.326815 | 0.353444 | 0.170124 | 0.0531898 | 0.0544692 |  0.0134903 |   0.0147258 | 0.00903743 | 0.000426471 |  0.00102855 |
-| [30, 30]  | 0.357765 | 0.343675 | 0.149228 | 0.0456734 | 0.0550285 |  0.0161571 |   0.0144974 |  0.0114546 | 0.000553233 |  0.00182295 |
-| [35, 35]  | 0.339015 | 0.354048 | 0.166334 | 0.0565936 | 0.0482382 |  0.0119482 |   0.0135322 | 0.00517336 | 0.000692798 | 0.000306363 |
-| [40, 40]  | 0.360765 | 0.329482 | 0.160887 |  0.053141 | 0.0589856 |   0.013766 |   0.0108545 | 0.00655215 | 0.000586075 | 0.000367309 |
+| [15, 15]  | 0.3558 | 0.2973 | 0.1536 | 0.0835 | 0.0748 |  0.0156 | 0.0 |  0.0088 |  0.0002 |  0.0034 |
+| [20, 20]  |  0.3633 | 0.3524 | 0.1107 | 0.0732 | 0.0682 | 0.0094 |  0.0078 | 0.0094 | 0.0001 | 0.0002 |
+| [25, 25]  | 0.3268 | 0.3534 | 0.1701 | 0.0532 | 0.0545 |  0.0135 |   0.0147 | 0.0090 | 0.0004 |  0.0010 |
+| [30, 30]  | 0.3578 | 0.3437 | 0.1492 | 0.0457 | 0.0550 |  0.0162 |   0.0145 |  0.0115 | 0.0006 |  0.0018 |
+| [35, 35]  | 0.3390 | 0.3540 | 0.1663 | 0.0566 | 0.0482 |  0.0119 |   0.0135 | 0.0052 | 0.0007 | 0.0003 |
+| [40, 40]  | 0.3608 | 0.3295 | 0.1609 |  0.0531 | 0.0590 |   0.0138 |   0.0109 | 0.0066 | 0.0006 | 0.0004 |
+
+</div>
 
 The results here obtained are in good agreement with those found in the research above mentioned and it is clear to see the higher the dimension of the toroidal grid the better the compatibility between the results. In particular we notice both the `block` and the `blinker` as the most frequent patterns with a relative frequency of ~ $33\%$.
 
@@ -219,24 +225,32 @@ The results here obtained are in good agreement with those found in the research
 
 We also tried expanding the board into a 100x100, also running the simulation for _500_ timesteps. This time the sample size is reduced to only 57 different seeds due to the long computational time needed for such board dimensions.
 
+<div align="center">
+
 | dimension  |    block |  blinker | bee_hive |      loaf |      boat |       tub |       pond |       ship |        toad |      beacon |
 | :--------- | -------: | -------: | -------: | --------: | --------: | --------: | ---------: | ---------: | ----------: | ----------: |
-| [100, 100] | 0.335997 | 0.348252 | 0.160406 | 0.0615305 | 0.0571706 | 0.0140943 | 0.00923986 | 0.00760617 | 0.000559395 | 0.000717659 |
+| [100, 100] | 0.3360 | 0.3483 | 0.1604 | 0.0615 | 0.0572 | 0.0141 | 0.0092 | 0.0076 | 0.0006 | 0.0007 |
+
+</div>
 
 As expected the results are in better agreement with the above cited articles.
 
-#### Average pattern lifetime
+#### **Average pattern lifetime**
 
 We also investigate the average time of a particular pattern to be alive. We extend the analysis on pattern frequency by considering a new definition of occurrency: if a pattern appears in a particular position _(x, y)_ and with a particular _chirality_ for $m$ consecutive time steps, we just count it only once with a lifetime of $m$ (instead of counting it $m$ times as before). Doing this, we have estimated the average lifetime of each pattern.
 
+<div align="center">
+
 | dimension |   block | bee_hive |    loaf |    boat |    ship |     tub |    pond | blinker |    toad |  beacon |
 | :-------- | ------: | -------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: |
-| [15, 15]  | 33.0507 |  89.8866 | 131.639 | 64.3485 | 35.6429 |    44.2 |     1.5 | 15.0939 |       1 |     193 |
-| [20, 20]  | 22.1023 |   44.508 | 57.4609 | 47.9021 | 30.6129 | 22.4048 | 26.1333 | 11.2101 | 1.16667 |   1.875 |
-| [25, 25]  | 16.7395 |  49.9558 | 36.3991 | 29.0468 | 24.0167 |  16.937 | 46.0392 | 9.19798 |    2.72 | 13.6667 |
-| [30, 30]  | 15.5673 |  36.1626 | 25.7596 | 26.3232 | 28.7045 | 18.1786 | 38.0595 | 7.40189 | 2.30189 | 23.6471 |
-| [35, 35]  | 14.4415 |  37.7393 | 28.8227 | 23.0166 | 11.2576 | 12.8539 | 32.6639 | 7.22382 | 2.61842 |     5.5 |
-| [40, 40]  | 14.3508 |  33.6934 | 27.2144 | 26.1871 | 12.9043 | 14.1191 |  30.447 | 6.43836 | 2.85526 | 4.85714 |
+| [15, 15]  | 33.1 |  89.9 | 131.6 | 64.3 | 35.6 |    44.2 |     1.5 | 15.1 |       1.0 |     193.0 |
+| [20, 20]  | 22.1 |   44.5 | 57.5 | 47.9 | 30.6 | 22.4 | 26.1 | 11.2 | 1.2 |   1.9 |
+| [25, 25]  | 16.7 |  50.0 | 36.4 | 29.0 | 24.0 |  16.9 | 46.0 | 9.2 |    2.7 | 13.7 |
+| [30, 30]  | 15.7 |  36.2 | 25.8 | 26.3 | 28.7 | 18.2 | 38.1 | 7.4 | 2.3 | 23.7 |
+| [35, 35]  | 14.4 |  37.7 | 28.8 | 23.0 | 11.3 | 12.9 | 32.7 | 7.2 | 2.6 |     5.5 |
+| [40, 40]  | 14.4 |  33.7 | 27.2 | 26.2 | 12.9 | 14.1 |  30.4 | 6.4 | 2.9 | 4.9 |
+
+</div>
 
 We see immediately as it decreases with the dimension of the grid.
 

@@ -1,6 +1,0 @@
-# Width = 120, Height = 120, Seed = 123, Num of iterations = 300
-8	[['glider', 0, 0, 8, 6]]
-# Width = 120, Height = 120, Seed = 123, Num of iterations = 300
-# Width = 120, Height = 120, Seed = 123, Num of iterations = 300
-# Width = 120, Height = 120, Seed = 123, Num of iterations = 300
-# Width = 120, Height = 120, Seed = 123, Num of iterations = 300

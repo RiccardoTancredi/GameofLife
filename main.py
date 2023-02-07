@@ -207,7 +207,7 @@ def main():
         # found_histo = game.search_pattern(pattern=pattern, name=figure)
         game.grid = game.update()
         if time == 0:
-            pygame.time.delay(3000) # To show the initial pattern
+            pygame.time.delay(5000) # To show the initial pattern
         pygame.time.delay(100) # To slow down the simulation
 
         # TO CREATE THE GIFS DECOMMENT THIS CODE
@@ -229,8 +229,5 @@ def main():
     # for instant in image_togif_list:
     #     images.append(imageio.imread(instant))
     # imageio.mimsave(os.path.join('gifs/' + gif_name + '.gif'), images, duration = gif_rate) # modify duration as needed
-
-# testgrid = Toroid( grid=pattern_zoo[figure] )
-# print(testgrid.Ipad(3))
 
 main()
