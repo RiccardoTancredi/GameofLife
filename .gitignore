@@ -4,3 +4,4 @@ prova_block.txt
 *.csv
 /nativities
 analisi_natives.ipynb
+analisi.py

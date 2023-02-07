@@ -84,8 +84,8 @@ The `board.py` file contains functions and variables used to analyse the game. W
 The `search_patterns` function counts the number of occurrences of a given pattern in the whole board at a given moment. We need to take into account the toroidal structure of the board: in order to do so, we expand it with the `Ipad` function. `Ipad` pads the board in a way that satisfies periodic boundary conditions. In this way we can find patterns that are split by the edge of the board. `search_patterns` also considers flipped and rotated variants of the desired pattern.
 
 <div align="center">
-    <img src=figures/bee_hive_filter.png width=450 height 300>
-    <img src=figures/beeedge.png width=450 height 300>
+    <img src=figures/bee_hive_filter.png width=450 height=300>
+    <img src=figures/beeedge.png width=450 height=300>
 </div>
 
 Patterns are stored in rectangular filters as the one displayed above. The `search_patterns` function looks for matches of the filter in the padded board, without considering the grey cells (0.5 value) in the filter. This guarantees a standardized match formatting, since the position of the match refers to the top left corner of the filter, while allowing a flexible filter shape. Let's take for example the right image above: the _beehive_ is found on the edge, thanks to the padding on the board, in the position marked by the red rectangle. The filter (green rectangle) doesn't consider the bottom left square (blue rectangle), thus correctly classifying what it sees as a _beehive_.
@@ -114,7 +114,7 @@ The choices are *random*, *fromTxt* and *easterEgg*.
   dim_ver,dim_hor
   noise
   pattern_name1,i1,j1,chir1
-  pattern_name2,i2,j2,chir2
+  pattern_name2,i2,j2,chir2b
   pattern_name3,i3,j3,chir3
   ...
 
@@ -227,9 +227,7 @@ As expected the results are in better agreement with the above cited articles.
 
 #### Average pattern lifetime
 
-In doing so we have to keep in mind that there is the risk of overestimating these results: this is due to the fact that it can happen that "stability" is reached in a few generations
-
-We also asked ourselves the average time of a particular pattern to be alive. We extend the above mentioned analysis on pattern frequency by considering as occurrency: if a pattern appears in a particular position _(x, y)_ and with a particular chirality for $m$ consecutive time steps we just count it once with a lifetime of $m$(instead of counting it $m$ times as before). Doing this, we have estimated the average lifetime of each pattern.
+We also investigate the average time of a particular pattern to be alive. We extend the analysis on pattern frequency by considering a new definition of occurrency: if a pattern appears in a particular position _(x, y)_ and with a particular _chirality_ for $m$ consecutive time steps, we just count it only once with a lifetime of $m$ (instead of counting it $m$ times as before). Doing this, we have estimated the average lifetime of each pattern.
 
 | dimension |   block | bee_hive |    loaf |    boat |    ship |     tub |    pond | blinker |    toad |  beacon |
 | :-------- | ------: | -------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: |
@@ -240,7 +238,7 @@ We also asked ourselves the average time of a particular pattern to be alive. We
 | [35, 35]  | 14.4415 |  37.7393 | 28.8227 | 23.0166 | 11.2576 | 12.8539 | 32.6639 | 7.22382 | 2.61842 |     5.5 |
 | [40, 40]  | 14.3508 |  33.6934 | 27.2144 | 26.1871 | 12.9043 | 14.1191 |  30.447 | 6.43836 | 2.85526 | 4.85714 |
 
-The average lifetime of each pattern decreases with the dimension of the grid
+We see immediately as it decreases with the dimension of the grid.
 
 ### Sources:
 
